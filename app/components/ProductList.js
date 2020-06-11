@@ -3,15 +3,17 @@ import {StyleSheet, Text, View, TextInput} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import ProductItem from './ProductItem';
-import {FlatList} from 'react-native-gesture-handler';
+import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {useShoppingCart} from '../common/shoppingCart.hook';
+import {useAppContext} from '../AppContext';
+import {useNavigation} from '@react-navigation/native';
 
 export default function ProductList() {
   const [searchKey, setSearchKey] = useState('');
   const [products, setProductList] = useState([]);
-  const sc = useShoppingCart();
+  const {countProducts} = useAppContext();
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetch('http://localhost:3000/products')
@@ -27,6 +29,10 @@ export default function ProductList() {
     return <ProductItem product={product} key={product.id} />;
   };
 
+  const _showShoppingCart = () => {
+    navigation.navigate('ShoppingCart');
+  };
+
   return (
     <SafeAreaView>
       <View style={styles.searchBar}>
@@ -36,8 +42,12 @@ export default function ProductList() {
           style={styles.searchInput}
         />
         <Icon name="magnify" size={32} style={{color: '#F5A942'}} />
-        <Icon name="cart-outline" size={32} style={{color: '#4EBC7A'}} />
-        <Text style={{color: 'blue'}}>{sc.countProducts()}</Text>
+        <TouchableOpacity
+          style={{flexDirection: 'row'}}
+          onPress={_showShoppingCart}>
+          <Icon name="cart-outline" size={32} style={{color: '#4EBC7A'}} />
+          <Text style={{color: '#E93E43'}}>{countProducts()}</Text>
+        </TouchableOpacity>
       </View>
       <FlatList
         data={products.filter((p) => p.title.indexOf(searchKey) >= 0)}

@@ -31,8 +31,9 @@ export default function ProductItem(props) {
 const styles = StyleSheet.create({
   productContainer: {
     padding: 8,
-    marginVertical: 4,
-    backgroundColor: '#eeeeee',
+    margin: 4,
+    backgroundColor: '#E1E1E1',
+    borderRadius: 8,
   },
   productTitle: {
     fontWeight: '700',

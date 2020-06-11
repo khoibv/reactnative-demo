@@ -3,14 +3,14 @@ import {StyleSheet, Text, View, Image, Button, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {formatMoney} from '../common/utils';
-import {useShoppingCart} from '../common/shoppingCart.hook';
+import {useAppContext} from '../AppContext';
 
 export default function ProductDetails(props) {
   const product = props.route.params;
-  const sc = useShoppingCart();
+  const {addProductToCart} = useAppContext();
 
   const addToCart = () => {
-    sc.addToShoppingCart(product);
+    addProductToCart(product);
   };
 
   return (
